@@ -1,0 +1,18 @@
+<html>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            document.getElementById('join-btn').onclick = function changeContent() {
+                var room_id = $('#room-id').val();
+                alert(room_id)
+
+            }
+        });
+    </script>
+    <body>
+        <input type='text' id='room-id' placeholder='Enter room id'/><button id='join-btn'>Join</button>
+    </body>
+    
+</html>
