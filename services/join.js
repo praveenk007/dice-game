@@ -11,13 +11,12 @@ class Join {
             };
             rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true, 'win': false};
         } else {
-            rooms[query.room_id].players.push(query.player_id);
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false, 'win': false};
-            var game = rooms[query.room_id].game;
-            rooms[query.room_id].status = 'in_progress';
+            if(!rooms[query.room_id].players.includes(query.player_id)) {
+                rooms[query.room_id].players.push(query.player_id);
+                rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false, 'win': false};
+                rooms[query.room_id].status = 'in_progress';
+            }
         } 
-        console.log('in join ' + JSON.stringify(rooms))
-
         this.result = rooms[query.room_id]
     }
 
