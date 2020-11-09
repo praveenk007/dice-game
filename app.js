@@ -2,59 +2,32 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-var rooms = {
-};
+const EventHandler = require('./services/eventHandler.js');
+const Join = require('./services/join.js');
+const Roll = require('./services/roll.js');
+
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
   });
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    
     socket.on('join', (query) => {
-        if(!rooms[query.room_id]) {
-            rooms[query.room_id] = {
-                players: [query.player_id],
-                game: {},
-                status: 'created'
-            };
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true, 'win': false};
-        } else {
-            rooms[query.room_id].players.push(query.player_id);
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false, 'win': false};
-            var game = rooms[query.room_id].game;
-            rooms[query.room_id].status = 'in_progress';
-            for(var player_id in game) {
-                io.emit(player_id + '-game-start', rooms[query.room_id]);
-            }
+        let handler = new EventHandler(new Join());
+        handler.processEvent(query);
+        let game = handler.result;
+        if(game.status == 'in_progress') {
+            game.players.forEach(player_id => {
+                io.emit(player_id + '-game-start', game);
+            });
         }
     });
     socket.on('roll', (query) => {
-        let dice_val = Math.floor(Math.random() * Math.floor(5)) + 1;
-        let player_id = rooms[query.room_id].players[query.player_no-1];
-        let game = rooms[query.room_id].game;
-        let game_win = false;
-        let current_player = game[player_id];
-        current_player.score = current_player.score + dice_val;
-        if(current_player.score >= 10) {
-            current_player.win = true;
-            game_win = true;
-            rooms[query.room_id].status = 'complete';
-            rooms[query.room_id].winning_player = player_id; 
-        }
-        current_player.turn = false;
-        if(!game_win) {
-            //set next player turn
-            let next_player_id;
-            if(query.player_no == rooms[query.room_id].players.length) {
-                next_player_id = rooms[query.room_id].players[0];
-            } else {
-                next_player_id = rooms[query.room_id].players[query.player_no];
-            }
-            game[next_player_id].turn = true;
-        }
-        console.log(JSON.stringify(rooms));
-        io.emit('roll-result', rooms[query.room_id]);
+        let handler = new EventHandler(new Roll());
+        handler.processEvent(query);
+        let game = handler.result;
+        io.emit('roll-result', game);
     });
 });
 

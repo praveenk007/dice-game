@@ -18,7 +18,6 @@
                 let player_no = 0;
                 result.players.forEach(pl_id => {
                     player_no++;
-                    console.log('pl id '+pl_id)
                     let player = result.game[pl_id];
                     if(player.turn && player_id == pl_id) {
                         $('#roll-' + player_no).show();
@@ -30,6 +29,7 @@
                 })
             });
             socket.on('roll-result', function(result) {
+                console.log(result)
                 let player_no = 0;
                 if(result.status == 'complete') {
                     result.players.forEach(pl_id => {
