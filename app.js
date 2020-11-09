@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
             var game = rooms[query.room_id].game;
             rooms[query.room_id].status = 'in_progress';
             for(var player_id in game) {
-                io.emit(player_id + '-game-start', game);
+                io.emit(player_id + '-game-start', rooms[query.room_id]);
             }
         }
     });
@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
             game[next_player_id].turn = true;
         }
         console.log(JSON.stringify(rooms));
-        io.emit('roll-result', game);
+        io.emit('roll-result', rooms[query.room_id]);
     });
 });
 

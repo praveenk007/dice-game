@@ -13,29 +13,28 @@
                 socket.emit('join', {'room_id': room_id, 'player_id': player_id})
             };
             socket.on(player_id + '-game-start', function(result) {
-                console.log(result)
                 $('#join-game').hide();
                 $('#game-board').show();
-                for(let player in result) {
-                    if(result[player].turn && player_id == player) {
-                        $('#roll-'+result[player].player_no).show();
+                for(let player in result.game) {
+                    if(result.game[player].turn && player_id == player) {
+                        $('#roll-'+result.game[player].player_no).show();
                     } else {
-                        $('#roll-'+result[player].player_no).hide();
+                        $('#roll-'+result.game[player].player_no).hide();
                     }
-                    $('#player-'+result[player].player_no+'-name').text('Player: ' + player);
-                    $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
+                    $('#player-'+result.game[player].player_no+'-name').text('Player: ' + player);
+                    $('#player-'+result.game[player].player_no+'-score').text('Score: ' + result.game[player].score);
                 }
             });
             socket.on('roll-result', function(result) {
-                for(let player in result) {
-                    $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
-                    if(result[player].win) {
+                for(let player in result.game) {
+                    $('#player-'+result.game[player].player_no+'-score').text('Score: ' + result.game[player].score);
+                    if(result.game[player].win) {
                         $('#game-status').text('Game ended - Player ' + player + ' won')
                         break;
-                    } else if(result[player].turn && player_id == player) {
-                        $('#roll-'+result[player].player_no).show();
+                    } else if(result.game[player].turn && player_id == player) {
+                        $('#roll-'+result.game[player].player_no).show();
                     } else {
-                        $('#roll-'+result[player].player_no).hide();
+                        $('#roll-'+result.game[player].player_no).hide();
                     }
                 }
             });
