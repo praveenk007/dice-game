@@ -13,6 +13,7 @@
                 socket.emit('join', {'room_id': room_id, 'player_id': player_id})
             };
             socket.on(player_id + '-game-start', function(result) {
+                console.log(result)
                 $('#join-game').hide();
                 $('#game-board').show();
                 for(let player in result) {
@@ -22,6 +23,11 @@
                         $('#roll-'+result[player].player_no).hide();
                     }
                     $('#player-'+result[player].player_no+'-name').text('Player: ' + player);
+                    $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
+                }
+            });
+            socket.on('roll-result', function(result) {
+                for(let player in result) {
                     $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
                 }
             });

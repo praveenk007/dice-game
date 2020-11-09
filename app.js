@@ -19,7 +19,7 @@ io.on('connection', (socket) => {
             rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': 1, 'turn': true, 'win': false};
         } else {
             rooms[query.room_id].players.push(query.player_id);
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': Object.keys(rooms[query.room_id]).length+1, 'turn': false, 'win': false};
+            rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': rooms[query.room_id].players.length, 'turn': false, 'win': false};
             var game = rooms[query.room_id].game;
             for(var player_id in game) {
                 console.log('starting game '+ player_id)
