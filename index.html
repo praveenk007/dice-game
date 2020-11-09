@@ -7,17 +7,29 @@
             var player_id = Math.random().toString(36).substring(7);
             $('#player').text('Player : ' + player_id);
             var socket = io();
+            var room_id;
             document.getElementById('join-btn').onclick = function changeContent() {
-                var room_id = $('#room-id').val();
+                room_id = $('#room-id').val();
                 socket.emit('join', {'room_id': room_id, 'player_id': player_id})
             };
             socket.on(player_id + '-game-start', function(result) {
                 $('#join-game').hide();
                 $('#game-board').show();
                 for(let player in result) {
+                    if(result[player].turn && player_id == player) {
+                        $('#roll-'+result[player].player_no).show();
+                    } else {
+                        $('#roll-'+result[player].player_no).hide();
+                    }
                     $('#player-'+result[player].player_no+'-name').text('Player: ' + player);
                     $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
                 }
+            });
+            document.getElementsByName('roll-btn').forEach(elem => {
+                elem.onclick = function roll() {
+                    let player_no = parseInt(elem.id.replace('roll-', ''));
+                    socket.emit('roll', {player_no: player_no, room_id: room_id});
+                };
             });
         });
 
@@ -33,10 +45,12 @@
                 <div id='player-1'>
                     <span id='player-1-name'></span>
                     <span id='player-1-score'></span>
+                    <button id='roll-1' hidden name='roll-btn'>Roll</button>
                 </div>
                 <div id='player-2'>
                     <span id='player-2-name'></span>
                     <span id='player-2-score'></span>
+                    <button id='roll-2' name='roll-btn' hidden>Roll</button>
                 </div>
             </div>
         </div>
