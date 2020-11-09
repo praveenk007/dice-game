@@ -9,7 +9,7 @@ class Roll {
         let game_win = false;
         let current_player = game[player_id];
         current_player.score = current_player.score + dice_val;
-        if(current_player.score >= 10) {
+        if(current_player.score >= 61) {
             current_player.win = true;
             game_win = true;
             rooms[query.room_id].status = 'complete';
