@@ -31,18 +31,27 @@
             });
             socket.on('roll-result', function(result) {
                 let player_no = 0;
-                result.players.forEach(pl_id => {
-                    player_no++;
-                    let player = result.game[pl_id];
-                    $('#player-' + player_no + '-score').text('Score: ' + player.score);
-                    if(player.win) {
-                        $('#game-status').text('Game ended - Player ' + pl_id + ' won')
-                    } else if(player.turn && pl_id == player_id) {
-                        $('#roll-' + player_no).show();
-                    } else {
+                if(result.status == 'complete') {
+                    result.players.forEach(pl_id => {
+                        player_no++;
+                        let player = result.game[pl_id];
                         $('#roll-' + player_no).hide();
-                    }
-                });
+                        $('#player-' + player_no + '-score').text('Score: ' + player.score);
+                    });
+                    $('#game-status').text('Game ended - Player ' + result.winning_player + ' won');
+                } else {
+                    result.players.forEach(pl_id => {
+                        player_no++;
+                        let player = result.game[pl_id];
+                        $('#player-' + player_no + '-score').text('Score: ' + player.score);
+                        if(player.turn && pl_id == player_id) {
+                            $('#roll-' + player_no).show();
+                        } else {
+                            $('#roll-' + player_no).hide();
+                        }
+                    });
+                }
+                
             });
             document.getElementsByName('roll-btn').forEach(elem => {
                 elem.onclick = function roll() {
