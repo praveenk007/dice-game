@@ -29,6 +29,14 @@
             socket.on('roll-result', function(result) {
                 for(let player in result) {
                     $('#player-'+result[player].player_no+'-score').text('Score: ' + result[player].score);
+                    if(result[player].win) {
+                        $('#game-status').text('Game ended - Player ' + player + ' won')
+                        break;
+                    } else if(result[player].turn && player_id == player) {
+                        $('#roll-'+result[player].player_no).show();
+                    } else {
+                        $('#roll-'+result[player].player_no).hide();
+                    }
                 }
             });
             document.getElementsByName('roll-btn').forEach(elem => {
@@ -46,7 +54,7 @@
             <input type='text' id='room-id' placeholder='Enter room id'/><button id='join-btn'>Join</button>
         </div>
         <div id='game-board' hidden>
-            <h3>Game commenced</h3>
+            <h3 id='game-status'>Game commenced</h3>
             <div id='score-board'>
                 <div id='player-1'>
                     <span id='player-1-name'></span>

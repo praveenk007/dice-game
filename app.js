@@ -2,7 +2,8 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-var rooms = {};
+var rooms = {
+};
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -14,19 +15,19 @@ io.on('connection', (socket) => {
         if(!rooms[query.room_id]) {
             rooms[query.room_id] = {
                 players: [query.player_id],
-                game: {}
+                game: {},
+                status: 'created'
             };
             rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': 1, 'turn': true, 'win': false};
         } else {
             rooms[query.room_id].players.push(query.player_id);
             rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': rooms[query.room_id].players.length, 'turn': false, 'win': false};
             var game = rooms[query.room_id].game;
+            rooms[query.room_id].status = 'in_progress';
             for(var player_id in game) {
-                console.log('starting game '+ player_id)
                 io.emit(player_id + '-game-start', game);
             }
         }
-        console.log(rooms)
     });
     socket.on('roll', (query) => {
         let dice_val = Math.floor(Math.random() * Math.floor(5)) + 1;
@@ -35,9 +36,11 @@ io.on('connection', (socket) => {
         let game_win = false;
         let current_player = game[player_id];
         current_player.score = current_player.score + dice_val;
-        if(current_player.score >= 61) {
+        if(current_player.score >= 10) {
             current_player.win = true;
             game_win = true;
+            rooms[query.room_id].status = 'complete';
+            rooms[query.room_id].winning_player = player_id; 
         }
         current_player.turn = false;
         if(!game_win) {
