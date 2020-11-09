@@ -18,10 +18,10 @@ io.on('connection', (socket) => {
                 game: {},
                 status: 'created'
             };
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': 1, 'turn': true, 'win': false};
+            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true, 'win': false};
         } else {
             rooms[query.room_id].players.push(query.player_id);
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'player_no': rooms[query.room_id].players.length, 'turn': false, 'win': false};
+            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false, 'win': false};
             var game = rooms[query.room_id].game;
             rooms[query.room_id].status = 'in_progress';
             for(var player_id in game) {
