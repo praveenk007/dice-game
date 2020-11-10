@@ -1,5 +1,6 @@
 var rooms = require('./inMemory.js');
 var Dice = require('./../utils/dice.js');
+const config = require('config');
 
 class Roll {
 
@@ -9,7 +10,7 @@ class Roll {
         let game = rooms[query.room_id].game;
         let current_player = game[player_id];
         current_player.score = current_player.score + dice_val;
-        if(current_player.score >= 10) {
+        if(current_player.score >= config.get('game.winning_score')) {
             rooms[query.room_id].status = 'complete';
             rooms[query.room_id].winner = player_id; 
         }

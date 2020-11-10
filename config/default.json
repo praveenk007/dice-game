@@ -1,0 +1,9 @@
+{
+    "app": {
+        "port": 3000
+    },
+    "game": {
+        "auto_play_timer": 60,
+        "winning_score": 61
+    }
+}

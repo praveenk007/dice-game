@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var socketConstants = require('./constants/socketConstants')
+const config = require('config');
 
 const EventHandler = require('./services/eventHandler.js');
 const Join = require('./services/join.js');
@@ -28,7 +29,7 @@ io.on('connection', (socket) => {
     });
 
     function beginCountdown(room_id, player_id) {
-        let counter = 10;
+        let counter = config.get('game.auto_play_timer');
         let countdownInterval = setInterval(function() {
             let game = new GameState().game(room_id);
             if(game.player_turn != player_id || game.winner) {
@@ -57,7 +58,7 @@ io.on('connection', (socket) => {
         return result;
     }
 });
-
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+let port = config.get('app.port');
+http.listen(port, () => {
+  console.log(`listening on *:${port}`);
 });
