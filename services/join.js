@@ -9,11 +9,11 @@ class Join {
                 game: {},
                 status: 'created'
             };
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true, 'win': false};
+            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true};
         } else {
             if(!rooms[query.room_id].players.includes(query.player_id)) {
                 rooms[query.room_id].players.push(query.player_id);
-                rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false, 'win': false};
+                rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false};
                 rooms[query.room_id].status = 'in_progress';
             }
         } 
