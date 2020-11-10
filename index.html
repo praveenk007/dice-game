@@ -12,15 +12,21 @@
                 room_id = $('#room-id').val();
                 socket.emit('join', {'room_id': room_id, 'player_id': player_id})
             };
+            function loadTimer(player_no) {
+                socket.on(room_id+'-timer', function(result) {
+                    $('#player-'+player_no+'-timer').text(result);
+                });
+            }
             socket.on(player_id + '-game-start', function(result) {
                 $('#join-game').hide();
                 if(result.status == 'created') {
                     $('#game-status').text('Game created - Waiting for players to join');
                 } else if(result.status == 'in_progress') {
+                    loadTimer(result.players.findIndex(pl_id => pl_id == result.player_turn) + 1);
                     $('#game-status').text('Game commenced');
                     $('#game-board').show();
                     let player_no = 0;
-                    let player_turn = result.current_turn;
+                    let player_turn = result.player_turn;
                     result.players.forEach(pl_id => {
                         player_no++;
                         let player = result.game[pl_id];
@@ -35,7 +41,6 @@
                 }
             });
             socket.on('roll-result', function(result) {
-                console.log(result)
                 let player_no = 0;
                 if(result.status == 'complete') {
                     result.players.forEach(pl_id => {
@@ -79,11 +84,13 @@
                 <div id='player-1'>
                     <span id='player-1-name'></span>
                     <span id='player-1-score'></span>
+                    <span id='player-1-timer'></span>
                     <button id='roll-1' hidden name='roll-btn'>Roll</button>
                 </div>
                 <div id='player-2'>
                     <span id='player-2-name'></span>
                     <span id='player-2-score'></span>
+                    <span id='player-2-timer'></span>
                     <button id='roll-2' name='roll-btn' hidden>Roll</button>
                 </div>
             </div>
