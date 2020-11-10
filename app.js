@@ -8,15 +8,22 @@ const EventHandler = require('./services/eventHandler.js');
 const Join = require('./services/join.js');
 const Roll = require('./services/roll.js');
 const GameState = require('./services/gameState.js');
+const SessionHandler = require('./services/sessionHandler');
 
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
   });
 
-io.on('connection', (socket) => {
-    
+io.on(socketConstants.CONNECT, (socket) => {
+    let session_id = socket.id;
+    new SessionHandler().add(session_id, {session_id: session_id, created_at: new Date()});
+    socket.on(socketConstants.DISCONNECT, () => {
+        new SessionHandler().remove(session_id);
+    });
     socket.on(socketConstants.JOIN, (query) => {
+        new SessionHandler().update(session_id, {room_id: query.room_id, player_id: query.player_id});
+        query.session_id = session_id;
         let handler = new EventHandler(new Join());
         handler.processEvent(query);
         let game = handler.result;

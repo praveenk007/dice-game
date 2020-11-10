@@ -1,3 +1,7 @@
+const CONNECT = 'connect';
+
+const DISCONNECT = 'disconnect';
+
 const ROLL_RESULT = 'roll-result';
 
 const TIMER_SUFFIX = '-timer';
@@ -9,6 +13,8 @@ const ROLL = 'roll';
 const JOIN = 'join';
 
 module.exports = {
+    CONNECT: CONNECT,
+    DISCONNECT: DISCONNECT,
     ROLL_RESULT: ROLL_RESULT,
     TIMER_SUFFIX: TIMER_SUFFIX,
     ROLL: ROLL,

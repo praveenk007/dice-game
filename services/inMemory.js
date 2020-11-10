@@ -1,3 +1,5 @@
 var rooms = {};
 
-module.exports = rooms;
+var sessions = {};
+
+module.exports = {rooms, sessions};
