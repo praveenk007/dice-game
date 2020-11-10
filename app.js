@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var socketConstants = require('./constants/socketConstants')
 
 const EventHandler = require('./services/eventHandler.js');
 const Join = require('./services/join.js');
@@ -14,12 +15,12 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     
-    socket.on('join', (query) => {
+    socket.on(socketConstants.JOIN, (query) => {
         let handler = new EventHandler(new Join());
         handler.processEvent(query);
         let game = handler.result;
         game.players.forEach(player_id => {
-            io.emit(player_id + '-game-start', game);
+            io.emit(player_id + socketConstants.GAME_START_SUFFIX, game);
         });
         if(game.status == 'in_progress') {
             beginCountdown(query.room_id, query.player_id);
@@ -34,18 +35,18 @@ io.on('connection', (socket) => {
                 clearInterval(countdownInterval);
             } else if(counter == 0) {
                 let player_no = game.players.findIndex(pl_id => pl_id == player_id) + 1;
-                io.emit('roll-result', roll({'player_no': player_no, 'room_id': room_id}));
+                io.emit(socketConstants.ROLL_RESULT, roll({'player_no': player_no, 'room_id': room_id}));
                 clearInterval(countdownInterval);
             } else {
                 let player_no = game.players.findIndex(pl_id => pl_id == player_id) + 1;
-                io.emit(room_id + '-timer', {val: counter, player_no: player_no, player_id: player_id});
+                io.emit(room_id + socketConstants.TIMER_SUFFIX, {val: counter, player_no: player_no, player_id: player_id});
                 counter--;
             }
         }, 1000);
     }
 
-    socket.on('roll', (query) => {
-        io.emit('roll-result', roll(query));
+    socket.on(socketConstants.ROLL, (query) => {
+        io.emit(socketConstants.ROLL_RESULT, roll(query));
     });
 
     function roll(query) {
