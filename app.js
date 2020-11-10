@@ -17,11 +17,11 @@ io.on('connection', (socket) => {
         let handler = new EventHandler(new Join());
         handler.processEvent(query);
         let game = handler.result;
-        if(game.status == 'in_progress') {
+        //if(game.status == 'in_progress') {
             game.players.forEach(player_id => {
                 io.emit(player_id + '-game-start', game);
             });
-        }
+        //}
     });
     socket.on('roll', (query) => {
         let handler = new EventHandler(new Roll());
