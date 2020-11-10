@@ -9,11 +9,12 @@ class Join {
                 game: {},
                 status: 'created'
             };
-            rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': true};
+            rooms[query.room_id].game[query.player_id] = {score: 0};
+            rooms[query.room_id].current_turn = query.player_id;
         } else {
             if(!rooms[query.room_id].players.includes(query.player_id)) {
                 rooms[query.room_id].players.push(query.player_id);
-                rooms[query.room_id].game[query.player_id] = {score: 0, 'turn': false};
+                rooms[query.room_id].game[query.player_id] = {score: 0};
                 rooms[query.room_id].status = 'in_progress';
             }
         } 

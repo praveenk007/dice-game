@@ -16,10 +16,11 @@
                 $('#join-game').hide();
                 $('#game-board').show();
                 let player_no = 0;
+                let player_turn = result.current_turn;
                 result.players.forEach(pl_id => {
                     player_no++;
                     let player = result.game[pl_id];
-                    if(player.turn && player_id == pl_id) {
+                    if(player_turn == pl_id && player_id == pl_id) {
                         $('#roll-' + player_no).show();
                     } else {
                         $('#roll-' + player_no).hide();
@@ -44,7 +45,7 @@
                         player_no++;
                         let player = result.game[pl_id];
                         $('#player-' + player_no + '-score').text('Score: ' + player.score);
-                        if(player.turn && pl_id == player_id) {
+                        if(result.player_turn == pl_id && pl_id == player_id) {
                             $('#roll-' + player_no).show();
                         } else {
                             $('#roll-' + player_no).hide();

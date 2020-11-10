@@ -15,7 +15,6 @@ class Roll {
             rooms[query.room_id].status = 'complete';
             rooms[query.room_id].winning_player = player_id; 
         }
-        current_player.turn = false;
         if(!rooms[query.room_id].winning_player) {
             //set next player turn
             let next_player_id;
@@ -24,7 +23,7 @@ class Roll {
             } else {
                 next_player_id = rooms[query.room_id].players[query.player_no];
             }
-            game[next_player_id].turn = true;
+            rooms[query.room_id].player_turn = next_player_id;
         }
         this.result = rooms[query.room_id];
     }
