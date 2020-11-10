@@ -7,7 +7,6 @@ class Roll {
         let dice_val = Dice.roll();
         let player_id = rooms[query.room_id].players[query.player_no-1];
         let game = rooms[query.room_id].game;
-        let game_win = false;
         let current_player = game[player_id];
         current_player.score = current_player.score + dice_val;
         if(current_player.score >= 10) {
