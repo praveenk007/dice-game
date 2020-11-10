@@ -10,14 +10,13 @@ class Roll {
         let game_win = false;
         let current_player = game[player_id];
         current_player.score = current_player.score + dice_val;
-        if(current_player.score >= 61) {
+        if(current_player.score >= 10) {
             current_player.win = true;
-            game_win = true;
             rooms[query.room_id].status = 'complete';
             rooms[query.room_id].winning_player = player_id; 
         }
         current_player.turn = false;
-        if(!game_win) {
+        if(!rooms[query.room_id].winning_player) {
             //set next player turn
             let next_player_id;
             if(query.player_no == rooms[query.room_id].players.length) {
