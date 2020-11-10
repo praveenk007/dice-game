@@ -1,4 +1,4 @@
-var rooms = require('./inMemory.js');
+var rooms = require('./inMemory.js').rooms;
 
 class GameState {
 

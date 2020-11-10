@@ -4,6 +4,7 @@
     },
     "game": {
         "auto_play_timer": 10,
-        "winning_score": 10
+        "winning_score": 10,
+        "max_players": 4
     }
 }

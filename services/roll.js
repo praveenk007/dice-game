@@ -1,4 +1,4 @@
-var rooms = require('./inMemory.js');
+var rooms = require('./inMemory.js').rooms;
 var Dice = require('./../utils/dice.js');
 const config = require('config');
 const SessionHandler = require('./sessionHandler');

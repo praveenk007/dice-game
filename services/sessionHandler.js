@@ -1,5 +1,3 @@
-const { sessions } = require('./inMemory');
-
 var sessionData = require('./inMemory').sessions;
 
 class SessionHandler {
@@ -18,7 +16,6 @@ class SessionHandler {
         for(var key in patch) {
             session[key] = patch[key];
         }
-        console.log(this.get(session_id));
     }
 
     remove(session_id) {

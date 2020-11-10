@@ -30,7 +30,7 @@ io.on(socketConstants.CONNECT, (socket) => {
         game.players.forEach(player_id => {
             io.emit(player_id + socketConstants.GAME_START_SUFFIX, game);
         });
-        if(game.status == 'in_progress') {
+        if(game.status == 'commenced') {
             beginCountdown(query.room_id, query.player_id);
         }
     });

@@ -21,7 +21,7 @@
                 $('#join-game').hide();
                 if(result.status == 'created') {
                     $('#game-status').text('Game created - Waiting for players to join');
-                } else if(result.status == 'in_progress') {
+                } else if(result.status == 'commenced') {
                     loadTimer(result.players.findIndex(pl_id => pl_id == result.player_turn) + 1);
                     $('#game-status').text('Game commenced');
                     $('#game-board').show();
@@ -94,6 +94,18 @@
                     <span id='player-2-score'></span>
                     <span id='player-2-timer'></span>
                     <button id='roll-2' name='roll-btn' hidden>Roll</button>
+                </div>
+                <div id='player-3'>
+                    <span id='player-3-name'></span>
+                    <span id='player-3-score'></span>
+                    <span id='player-3-timer'></span>
+                    <button id='roll-3' name='roll-btn' hidden>Roll</button>
+                </div>
+                <div id='player-4'>
+                    <span id='player-4-name'></span>
+                    <span id='player-4-score'></span>
+                    <span id='player-4-timer'></span>
+                    <button id='roll-4' name='roll-btn' hidden>Roll</button>
                 </div>
             </div>
         </div>
