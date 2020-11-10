@@ -12,9 +12,9 @@
                 room_id = $('#room-id').val();
                 socket.emit('join', {'room_id': room_id, 'player_id': player_id})
             };
-            function loadTimer(player_no) {
+            function loadTimer() {
                 socket.on(room_id+'-timer', function(result) {
-                    $('#player-'+player_no+'-timer').text(result);
+                    $('#player-'+result.player_no+'-timer').text(result.val);
                 });
             }
             socket.on(player_id + '-game-start', function(result) {
@@ -42,14 +42,15 @@
             });
             socket.on('roll-result', function(result) {
                 let player_no = 0;
-                if(result.status == 'complete') {
+                if(result.winner) {
                     result.players.forEach(pl_id => {
                         player_no++;
                         let player = result.game[pl_id];
                         $('#roll-' + player_no).hide();
+                        $('#player-' + player_no + '-timer').text('');
                         $('#player-' + player_no + '-score').text('Score: ' + player.score);
                     });
-                    $('#game-status').text('Game ended - Player ' + result.winning_player + ' won');
+                    $('#game-status').text('Game ended - Player ' + result.winner + ' won');
                 } else {
                     result.players.forEach(pl_id => {
                         player_no++;
@@ -58,6 +59,7 @@
                         if(result.player_turn == pl_id && pl_id == player_id) {
                             $('#roll-' + player_no).show();
                         } else {
+                            $('#player-' + player_no + '-timer').text('');
                             $('#roll-' + player_no).hide();
                         }
                     });
