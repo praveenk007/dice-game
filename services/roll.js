@@ -1,9 +1,10 @@
 var rooms = require('./inMemory.js');
+var Dice = require('./../utils/dice.js');
 
 class Roll {
 
     processEvent(query) {
-        let dice_val = Math.floor(Math.random() * Math.floor(5)) + 1;
+        let dice_val = Dice.roll();
         let player_id = rooms[query.room_id].players[query.player_no-1];
         let game = rooms[query.room_id].game;
         let game_win = false;
