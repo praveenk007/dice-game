@@ -1,5 +1,7 @@
 var rooms = require('./inMemory.js').rooms;
 const config = require('config');
+var gameStatus = require('./../constants/gameStatus')
+
 
 class Join {
 
@@ -8,7 +10,7 @@ class Join {
             rooms[query.room_id] = {
                 players: [query.player_id],
                 game: {},
-                status: 'created'
+                status: gameStatus.CREATED
             };
             rooms[query.room_id].game[query.player_id] = {score: 0, session_id: query.session_id};
         } else {
@@ -16,7 +18,7 @@ class Join {
                 rooms[query.room_id].players.push(query.player_id);
                 rooms[query.room_id].game[query.player_id] = {score: 0, session_id: query.session_id};
                 if(rooms[query.room_id].players.length == config.get('game.max_players')) {
-                    rooms[query.room_id].status = 'commenced';
+                    rooms[query.room_id].status = gameStatus.COMMENCED;
                 }
                 rooms[query.room_id].player_turn = query.player_id;
             }

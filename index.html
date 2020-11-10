@@ -19,9 +19,9 @@
             }
             socket.on(player_id + '-game-start', function(result) {
                 $('#join-game').hide();
-                if(result.status == 'created') {
+                if(result.status == 'CREATED') {
                     $('#game-status').text('Game created - Waiting for players to join');
-                } else if(result.status == 'commenced') {
+                } else if(result.status == 'COMMENCED') {
                     loadTimer(result.players.findIndex(pl_id => pl_id == result.player_turn) + 1);
                     $('#game-status').text('Game commenced');
                     $('#game-board').show();

@@ -2,6 +2,7 @@ var rooms = require('./inMemory.js').rooms;
 var Dice = require('./../utils/dice.js');
 const config = require('config');
 const SessionHandler = require('./sessionHandler');
+var gameStatus = require('./../constants/gameStatus')
 
 class Roll {
 
@@ -22,7 +23,7 @@ class Roll {
         let nextPlayerSession = new SessionHandler().get(room.game[room.player_turn].session_id);
         if(current_player.score >= config.get('game.winning_score') || 
             (!nextPlayerSession && room.players.length == 2)) {
-            room.status = 'complete';
+            room.status = gameStatus.ENDED;
             room.winner = player_id; 
         }
         this.result = room;

@@ -2,12 +2,13 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var socketConstants = require('./constants/socketConstants')
+var gameStatus = require('./constants/gameStatus')
 const config = require('config');
 
-const EventHandler = require('./services/eventHandler.js');
-const Join = require('./services/join.js');
-const Roll = require('./services/roll.js');
-const GameState = require('./services/gameState.js');
+const EventHandler = require('./services/eventHandler');
+const Join = require('./services/join');
+const Roll = require('./services/roll');
+const GameState = require('./services/gameState');
 const SessionHandler = require('./services/sessionHandler');
 
 
@@ -30,7 +31,7 @@ io.on(socketConstants.CONNECT, (socket) => {
         game.players.forEach(player_id => {
             io.emit(player_id + socketConstants.GAME_START_SUFFIX, game);
         });
-        if(game.status == 'commenced') {
+        if(game.status == gameStatus.COMMENCED) {
             beginCountdown(query.room_id, query.player_id);
         }
     });
