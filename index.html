@@ -1,6 +1,23 @@
 <html>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 20%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: center;
+          padding: 4px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
     <script>
         $(function () {
             console.log('in fn')
@@ -35,8 +52,8 @@
                         } else {
                             $('#roll-' + player_no).hide();
                         }
-                        $('#player-' + player_no + '-name').text('Player: ' + pl_id);
-                        $('#player-' + player_no + '-score').text('Score: ' + player.score);
+                        $('#player-' + player_no + '-name').text(pl_id);
+                        $('#player-' + player_no + '-score').text(player.score);
                     });
                 }
             });
@@ -48,14 +65,14 @@
                         let player = result.game[pl_id];
                         $('#roll-' + player_no).hide();
                         $('#player-' + player_no + '-timer').text('');
-                        $('#player-' + player_no + '-score').text('Score: ' + player.score);
+                        $('#player-' + player_no + '-score').text(player.score);
                     });
                     $('#game-status').text('Game ended - Player ' + result.winner + ' won');
                 } else {
                     result.players.forEach(pl_id => {
                         player_no++;
                         let player = result.game[pl_id];
-                        $('#player-' + player_no + '-score').text('Score: ' + player.score);
+                        $('#player-' + player_no + '-score').text(player.score);
                         if(result.player_turn == pl_id && pl_id == player_id) {
                             $('#roll-' + player_no).show();
                         } else {
@@ -82,32 +99,38 @@
         </div>
         <h3 id='game-status'></h3>
         <div id='game-board' hidden>
-            <div id='score-board'>
-                <div id='player-1'>
-                    <span id='player-1-name'></span>
-                    <span id='player-1-score'></span>
-                    <span id='player-1-timer'></span>
-                    <button id='roll-1' hidden name='roll-btn'>Roll</button>
-                </div>
-                <div id='player-2'>
-                    <span id='player-2-name'></span>
-                    <span id='player-2-score'></span>
-                    <span id='player-2-timer'></span>
-                    <button id='roll-2' name='roll-btn' hidden>Roll</button>
-                </div>
-                <div id='player-3'>
-                    <span id='player-3-name'></span>
-                    <span id='player-3-score'></span>
-                    <span id='player-3-timer'></span>
-                    <button id='roll-3' name='roll-btn' hidden>Roll</button>
-                </div>
-                <div id='player-4'>
-                    <span id='player-4-name'></span>
-                    <span id='player-4-score'></span>
-                    <span id='player-4-timer'></span>
-                    <button id='roll-4' name='roll-btn' hidden>Roll</button>
-                </div>
-            </div>
+            <table id='score-board'>
+                <tr>
+                    <th>name</th>
+                    <th>score</th>
+                    <th>timer</th>
+                    <th>roll</th>
+                </tr>
+                <tr id='player-1'>
+                    <td id='player-1-name'></td>
+                    <td id='player-1-score'></td>
+                    <td id='player-1-timer'></td>
+                    <td><button id='roll-1' hidden name='roll-btn'>Roll</button></td>
+                </tr>
+                <tr id='player-2'>
+                    <td id='player-2-name'></td>
+                    <td id='player-2-score'></td>
+                    <td id='player-2-timer'></td>
+                    <td><button id='roll-2' name='roll-btn' hidden>Roll</button></td>
+                </tr>
+                <tr id='player-3'>
+                    <td id='player-3-name'></td>
+                    <td id='player-3-score'></td>
+                    <td id='player-3-timer'></td>
+                    <td><button id='roll-3' name='roll-btn' hidden>Roll</button></td>
+                </tr>
+                <tr id='player-4'>
+                    <td id='player-4-name'></td>
+                    <td id='player-4-score'></td>
+                    <td id='player-4-timer'></td>
+                    <td><button id='roll-4' name='roll-btn' hidden>Roll</button></td>
+                </tr>
+            </table>
         </div>
     </body>
     
